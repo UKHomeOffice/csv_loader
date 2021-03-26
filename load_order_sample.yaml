@@ -1,0 +1,9 @@
+version: 1
+patch:
+  # - table: unit
+  #   csv: V1__sample.csv
+init:
+  - table: ministry
+    csv: ministry.csv
+  - table: department
+    csv: department.csv

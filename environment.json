@@ -1,0 +1,10 @@
+{
+  "local": {
+    "auth": {
+      "url": "https://sso-dev.notprod.homeoffice.gov.uk/auth/",
+      "clientId": "www-service",
+      "realm": "cop-local"
+    },
+    "server": "http://localhost:3000"
+  }
+}

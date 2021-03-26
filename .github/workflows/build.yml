@@ -7,8 +7,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      IMAGE: 'csvloader'
-      IMAGE_DOCKER_HUB: 'ukhomeofficedigital/csvloader'
+      IMAGE: 'csv_loader'
+      IMAGE_DOCKER_HUB: 'ukhomeofficedigital/csv_loader'
     steps:
       - uses: actions/checkout@v2
       - name: Build the Docker image

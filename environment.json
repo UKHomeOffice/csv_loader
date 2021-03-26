@@ -1,10 +1,10 @@
 {
-  "local": {
+  "docker": {
     "auth": {
-      "url": "https://sso-dev.notprod.homeoffice.gov.uk/auth/",
-      "clientId": "www-service",
-      "realm": "cop-local"
+      "url": "http://0.0.0.0:8080/auth/",
+      "clientId": "service",
+      "realm": "rocks"
     },
-    "server": "http://localhost:3000"
+    "server": "http://0.0.0.0:3000"
   }
 }

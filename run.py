@@ -6,29 +6,34 @@ import yaml
 from datetime import datetime
 from typing import List
 from rich import print, pretty
+import json
 
 pretty.install()
 
 def init_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-u", "--username", help="username")
-    parser.add_argument("-p", "--password", help="password")
-    parser.add_argument("-s", "--server", help="Postgrest server url", default="http://localhost:3000")
-    parser.add_argument("-e", "--environment", default="local",
-                        choices=["local", "dev", "staging", "production"],
+    parser.add_argument("-u", "--username", help="username", default="demo")
+    parser.add_argument("-p", "--password", help="password", default="demo")
+    parser.add_argument("-e", "--environment", default="docker",
+                        choices=["docker", "local", "dev", "staging", "production"],
                         help=' '.join(["Specify the type of environment this is to be deployed in, ",
-                                      "Valid choices are: local, dev, staging, production"]))
+                                      "Valid choices are: docker, local, dev, staging, production"]))
     args = parser.parse_args()
     return args
 
 
-def get_token():
+def get_token(envs):
     username = args.username
     password = args.password
-    environment = args.environment
     from keycloak import KeycloakOpenID
 
-#TODO load env from json
+    print(f"Auth Url:      {envs['auth']['url']}")
+    print(f"Auth ClientId:      {envs['auth']['clientId']}")
+    print(f"Auth Realm:      {envs['auth']['realm']}")
+
+    keycloak_openid = KeycloakOpenID(server_url=envs['auth']['url'],
+                                     client_id=envs['auth']['clientId'],
+                                     realm_name=envs['auth']['realm'])
 
     # Get Token
     token = keycloak_openid.token(username, password)
@@ -41,7 +46,7 @@ def add_auth(header, token=None):
         header["Authorization"] = f"Bearer {access_token}"
 
 
-def query(table: str, filename: str, dir: str, is_upsert=False, token=None):
+def query(table: str, filename: str, dir: str, server, is_upsert=False, token=None):
     print(f"⬆ uploading '{filename}' to table '{table}'...", end="")
     header = {
         "Content-Type": "text/csv"
@@ -55,62 +60,72 @@ def query(table: str, filename: str, dir: str, is_upsert=False, token=None):
     with open(f"{dir}/{filename}", "r", encoding="utf-8") as fn:
         csv = fn.read()
 
-    r = requests.post(f"{args.server}/{table}", headers=header, data=csv.encode("utf-8"))
-    
+    r = requests.post(f"{server}/{table}", headers=header, data=csv.encode("utf-8"))
+
     if r.status_code != 201:
         raise Exception(r.text)
 
     print(f"[OK]")
 
 
-def load_applied_scripts(token=None) -> List[str]:
+def load_applied_scripts(server, token=None) -> List[str]:
     headers = {}
     add_auth(headers, token=token)
 
-    j = requests.get(f"{args.server}/_data_change_history", headers=headers).json()
+    j = requests.get(f"{server}/_data_change_history", headers=headers).json()
     return list(set([x["scriptname"] for x in j]))
 
 
-def save_state(filename: str, token=None):
+def save_state(filename: str, server, token=None):
     headers = {"Content-Type": "application/json"}
     add_auth(headers, token=token)
     data = {
         "scriptname": filename,
         "updatedby": "drone"
     }
-    r = requests.post(f"{args.server}/_data_change_history", headers=headers, json=data)
+    r = requests.post(f"{server}/_data_change_history", headers=headers, json=data)
 
 
 def main():
     token = None
     keycloak_openid = None
     is_local_dev = args.environment == "local"
-    if not is_local_dev:
-        token, keycloak_openid = get_token()
-    applied_scripts = load_applied_scripts(token=token)
-    do_init = len(applied_scripts) == 0  # so that migration from "--init" flag works
+
+    with open('environment.json', 'r') as environmentFile:
+        environmentData=environmentFile.read()
+
+    args.environment
+    envs = json.loads(environmentData)[args.environment]
+    server = envs['server']
 
     print(f"environment: {args.environment} (local: {is_local_dev})")
-    print(f"server:      {args.server}")
+    print(f"server:      {server}")
     print(f"username:    {args.username}")
-    print(f"do init:     {do_init}")
 
+    if not is_local_dev:
+        token, keycloak_openid = get_token(envs)
+    applied_scripts = load_applied_scripts(server, token=token)
+    do_init = len(applied_scripts) == 0  # so that migration from "--init" flag works
+
+    print(f"do init:     {do_init}")
 
     with open(r'load_order.yaml') as f:
         documents = yaml.full_load(f)
 
     init_documents = documents.get("init")
     patch_documents = documents.get("patch")
-    print(f"{len(init_documents)} init script(s) and {len(patch_documents)} patch(es).")
+
 
     if do_init:
+        print(f"{len(init_documents)} init script(s)")
         for item in init_documents:
             table = item["table"]
             filename = item["csv"]
-            query(table, filename, "csvs/initial", False, token=token)
-        save_state("init", token=token)
+            query(table, filename, "csvs/initial", server, False, token=token)
+        save_state("init", server, token=token)
 
     if patch_documents:
+        print(f"{len(patch_documents)} patch(es).")
         for item in patch_documents:
             table = item["table"]
             filename = item["csv"]
@@ -118,8 +133,8 @@ def main():
             if filename in applied_scripts:
                 print(f"[bold]{filename}[/bold] [underline]already[/underline] applied.")
             else:
-                query(table, filename, "csvs/patch", True, token=token)
-                save_state(filename, token=token)       
+                query(table, filename, "csvs/patch", server, True, token=token)
+                save_state(filename, server, token=token)
 
     # # Refresh token
     # token = keycloak_openid.refresh_token(token['refresh_token'])

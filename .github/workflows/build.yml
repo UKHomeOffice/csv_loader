@@ -22,4 +22,6 @@ jobs:
           registry: quay.io
           cache: true
           snapshot: true
-          tags: "${{ github.sha }}"
+          tags:
+            - "${{ github.sha }}"
+            - latest

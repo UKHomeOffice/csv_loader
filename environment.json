@@ -1,10 +1,10 @@
 {
   "docker": {
     "auth": {
-      "url": "http://0.0.0.0:8080/auth/",
+      "url": "http://db:8080/auth/",
       "clientId": "service",
       "realm": "rocks"
     },
-    "server": "http://0.0.0.0:3000"
+    "server": "http://postgrest:3000"
   }
 }

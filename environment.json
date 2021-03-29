@@ -1,7 +1,7 @@
 {
   "docker": {
     "auth": {
-      "url": "http://db:8080/auth/",
+      "url": "http://keycloak:8080/auth/",
       "clientId": "service",
       "realm": "rocks"
     },

@@ -7,7 +7,7 @@ echo "Exporting environment variables"
 
 
 export FLYWAY_USER="${FLYWAY_USER:=postgres}"
-export FLYWAY_PASSWORD="${FLYWAY_PASSWORD:=password}"
+export FLYWAY_PASSWORD="${FLYWAY_PASSWORD:=postgres}"
 export DB_HOSTNAME="${DB_HOSTNAME:=postgres}"
 export DB_PORT="${DB_PORT:=5432}"
 export DB_DEFAULT_NAME="${DB_DEFAULT_NAME:=postgres}"

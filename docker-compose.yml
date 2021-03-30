@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: postgres
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./postgres/config/setup-keycloakdb.sh:/docker-entrypoint-initdb.d/004-setup-keycloakdb.sh
@@ -42,7 +42,6 @@ services:
     entrypoint: /bin/bash -c /flyway/run.sh
     environment:
       - DB_HOSTNAME=db
-      - DB_NAME=ref
     depends_on:
       - db
 
@@ -70,6 +69,8 @@ services:
     image: quay.io/ukhomeofficedigital/csv_loader:latest
     container_name: validate
     command: "/validation/validate.py"
+    environment:
+      - POSTGRES_HOST=db
     depends_on:
       - db
       - flyway

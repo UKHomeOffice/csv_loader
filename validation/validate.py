@@ -13,14 +13,16 @@ import configparser
 from datetime import datetime
 
 # connect and create db
-host = os.getenv("POSTGRES_HOST", "db")
+host = os.getenv("POSTGRES_HOST", "postgres")
 db_name = os.getenv("POSTGRES_DB", "ref")
 user = os.getenv("POSTGRES_USER", "postgres")
-password = os.getenv("POSTGRES_PASSWORD", "password")
+password = os.getenv("POSTGRES_PASSWORD", "postgres")
 schema = os.getenv("POSTGRES_SCHEMA", "public")
+ref_conf = os.getenv("FLYWAY_REFERENCE_CONF", "/flyway/conf/reference.conf")
+schema_locations = os.getenv("FLYWAY_LOCATIONS_REFERENCE", "/flyway/schemas/reference")
 
 config = configparser.ConfigParser()
-with open("/flyway/conf/reference.conf") as stream:
+with open(ref_conf) as stream:
     config.read_string("[top]\n" + stream.read())
 
 flyway_target = int(config["top"]["flyway.target"])
@@ -32,7 +34,7 @@ conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
 def find_and_sort_scripts() -> Tuple[List[str], int]:
     # find scripts
-    _, _, files = next(os.walk("/flyway/schemas/reference"))
+    _, _, files = next(os.walk(schema_locations))
 
     # sort by version number as integer
     files = [(fn, (int(fn[1:].split("_")[0]))) for fn in files

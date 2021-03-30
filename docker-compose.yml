@@ -42,20 +42,7 @@ services:
     entrypoint: /bin/bash -c /flyway/run.sh
     environment:
       - DB_HOSTNAME=db
-      - DB_PORT=5432
       - DB_NAME=ref
-      - DB_DEFAULT_NAME=postgres
-      - FLYWAY_USER=postgres
-      - FLYWAY_PASSWORD=password
-      - DB_OWNERNAME=dbowner
-      - DB_OWNERPASSWORD=dboPwd
-      - DB_SCHEMA=public
-      - FLYWAY_PLACEHOLDERS_AUTHENTICATORUSER=authuser
-      - FLYWAY_PLACEHOLDERS_AUTHENTICATORPASSWORD=authPwd
-      - FLYWAY_PLACEHOLDERS_ANONUSER=anonuser
-      - FLYWAY_PLACEHOLDERS_READONLYUSER=readonlyuser
-      - FLYWAY_PLACEHOLDERS_SERVICEUSER=serviceuser
-      - FLYWAY_PLACEHOLDERS_REPORTUSER=reportuser
     depends_on:
       - db
 

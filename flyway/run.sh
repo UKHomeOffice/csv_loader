@@ -5,15 +5,27 @@ set +x
 
 echo "Exporting environment variables"
 
+
+export FLYWAY_URL="${FLYWAY_USER}:=postgres"
+export FLYWAY_PASSWORD="${FYWAY_PASSWORD}:=password"
+export DB_HOSTNAME="${DB_HOSTNAME}:=postgres"
+export DB_PORT="${DB_PORT}:=5432"
+export DB_DEFAULT_NAME="${DB_DEFAULT_NAME}:=postgres"
+export DB_OPTIONS="${DB_OPTIONS}:="
+export DB_JDBC_OPTIONS="${DB_JDBC_OPTIONS}:="
+
 export URL="postgresql://${FLYWAY_USER}:${FLYWAY_PASSWORD}@${DB_HOSTNAME}:${DB_PORT}/${DB_DEFAULT_NAME}${DB_OPTIONS}"
 export FLYWAY_URL="jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${DB_DEFAULT_NAME}${DB_JDBC_OPTIONS}"
 
-export FLYWAY_PLACEHOLDERS_MASTERUSER=${FLYWAY_USER}
-export FLYWAY_PLACEHOLDERS_REFERENCEDBNAME=${DB_NAME}
-export FLYWAY_PLACEHOLDERS_REFERENCEOWNERNAME=${DB_OWNERNAME}
-export FLYWAY_PLACEHOLDERS_REFERENCEOWNERPASSWORD=${DB_OWNERPASSWORD}
-export FLYWAY_PLACEHOLDERS_REFERENCESCHEMA=${DB_SCHEMA}
-
+export FLYWAY_PLACEHOLDERS_MASTERUSER="${FLYWAY_USER}:=postgres"
+export FLYWAY_PLACEHOLDERS_REFERENCEDBNAME="${DB_NAME}:=ref"
+export FLYWAY_PLACEHOLDERS_REFERENCEOWNERNAME="${DB_OWNERNAME}:=dbowner"
+export FLYWAY_PLACEHOLDERS_REFERENCEOWNERPASSWORD="${DB_OWNERPASSWORD}:=dboPwd"
+export FLYWAY_PLACEHOLDERS_REFERENCESCHEMA="${DB_SCHEMA}:=public"
+export FLYWAY_LOCATIONS_INIT="${FLYWAY_LOCATIONS_INIT}:=filesystem:/flyway/schemas/init"
+export FLYWAY_INIT_CONF="${FLYWAY_INIT_CONF}:=/flyway/conf/init.conf"
+export FLYWAY_LOCATIONS_REFERENCE="${FLYWAY_LOCATIONS_REFERENCE}:=filesystem:/flyway/schemas/reference"
+export FLYWAY_INIT_REFERENCE="${FLYWAY_INIT_REFERENCE}:=/flyway/conf/reference.conf"
 env
 
 echo "Checking if postgres is up and ready for connections"
@@ -36,14 +48,14 @@ done
 
 
 echo "Checking if database exists"
-STATUS=$( psql ${URL} -tc "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" | sed -e 's/^[ \t]*//')
+STATUS=$( psql ${URL} -tc "SELECT 1 FROM pg_database WHERE datname='${FLYWAY_PLACEHOLDERS_REFERENCEDBNAME}'" | sed -e 's/^[ \t]*//')
 if [[ "${STATUS}" == "1" ]]
 then
     echo "Database already exists"
 else
     echo "Database does not exist creating - Bootstrapping databases"
-    export FLYWAY_LOCATIONS="filesystem:/flyway/schemas/init"
-    flyway -configFiles=/flyway/conf/init.conf migrate
+    export FLYWAY_LOCATIONS="${FLYWAY_LOCATIONS_INIT}"
+    flyway -configFiles="${FLYWAY_INIT_CONF}" migrate
     if [[ "$?" != 0 ]]
     then
         echo "Error: initialising database"
@@ -53,7 +65,7 @@ else
 cat <<EOF >>/tmp/bootstrap.sql
 \c $DB_NAME
 CREATE SCHEMA $DB_SCHEMA AUTHORIZATION $DB_OWNERNAME;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA $DB_SCHEMA;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA $FLYWAY_PLACEHOLDERS_REFERENCESCHEMA;
 DROP SCHEMA public;
 \c $DB_DEFAULT_NAME
 REVOKE $DB_OWNERNAME FROM $FLYWAY_PLACEHOLDERS_MASTERUSER;
@@ -70,16 +82,22 @@ EOF
 fi
 
 echo "Starting migration of reference data"
-export FLYWAY_URL="jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${DB_NAME}${DB_JDBC_OPTIONS}"
-export FLYWAY_USER=${DB_OWNERNAME}
-export FLYWAY_PASSWORD=${DB_OWNERPASSWORD}
-export FLYWAY_SCHEMAS=${DB_SCHEMA}
-export FLYWAY_PLACEHOLDERS_SCHEMA=${DB_SCHEMA}
-export FLYWAY_LOCATIONS="filesystem:/flyway/schemas/reference"
+export FLYWAY_URL="jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${FLYWAY_PLACEHOLDERS_REFERENCEDBNAME}${DB_JDBC_OPTIONS}"
+export FLYWAY_USER="${FLYWAY_PLACEHOLDERS_REFERENCEOWNERNAME}"
+export FLYWAY_PASSWORD="${FLYWAY_PLACEHOLDERS_REFERENCEOWNERPASSWORD}"
+export FLYWAY_SCHEMAS="${FLYWAY_PLACEHOLDERS_REFERENCESCHEMA}"
+export FLYWAY_PLACEHOLDERS_SCHEMA="${FLYWAY_PLACEHOLDERS_REFERENCESCHEMA}"
+export FLYWAY_LOCATIONS="${FLYWAY_LOCATIONS_REFERENCE}"
+export FLYWAY_PLACEHOLDERS_AUTHENTICATORUSER="${FLYWAY_PLACEHOLDERS_AUTHENTICATORUSER}:=authuser"
+export FLYWAY_PLACEHOLDERS_AUTHENTICATORPASSWORD="${FLYWAY_PLACEHOLDERS_AUTHENTICATORPASSWORD}:=authPwd"
+export FLYWAY_PLACEHOLDERS_ANONUSER="${FLYWAY_PLACEHOLDERS_ANONUSER}:=anonuser"
+export FLYWAY_PLACEHOLDERS_READONLYUSER="${FLYWAY_PLACEHOLDERS_READONLYUSER}:=readonlyuser"
+export FLYWAY_PLACEHOLDERS_SERVICEUSER="${FLYWAY_PLACEHOLDERS_SERVICEUSER}:=serviceuser"
+export FLYWAY_PLACEHOLDERS_REPORTUSER="${FLYWAY_PLACEHOLDERS_REPORTUSER}:=reportuser"
 
 env
 
-flyway -configFiles=/flyway/conf/reference.conf migrate
+flyway -configFiles="${FLYWAY_INIT_REFERENCE}" migrate
 if [[ "$?" != 0 ]]
 then
     echo "Error: migration of reference db failed"

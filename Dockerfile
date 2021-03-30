@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update -y \
     && apt upgrade -y \
-    && apt install -y software-properties-common locales gnupg python3-pip \
+    && apt install -y software-properties-common locales gnupg python3-pip libpq-dev \
     && apt update -y \
     && localedef -i en_GB -c -f UTF-8 -A /usr/share/locale/locale.alias en_GB.UTF-8a \
     && python3 -m pip install -r requirements.txt \

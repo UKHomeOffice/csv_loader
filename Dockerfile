@@ -20,7 +20,7 @@ COPY environment.json /environment.json
 
 RUN apt update -y \
     && apt upgrade -y \
-    && apt install -y software-properties-common locales gnupg python3-pip libpq-dev openssl ca-certificates bash postgresql-client \
+    && apt install -y software-properties-common git locales gnupg python3-pip libpq-dev openssl ca-certificates bash postgresql-client \
     && apt update -y \
     && localedef -i en_GB -c -f UTF-8 -A /usr/share/locale/locale.alias en_GB.UTF-8a \
     && python3 -m pip install -r /tmp/requirements.txt \

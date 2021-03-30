@@ -1,24 +1,34 @@
-FROM ubuntu:20.04
+FROM digitalpatterns/jre:latest
 
-COPY . /app
-WORKDIR /app
-
-
+ENV FLYWAY_VERSION 7.3.0
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/flyway:/usr/bin:${PATH}"
+ENV PYTHONPATH="/python:${PYTHONPATH}"
+ENV LANG en_GB.utf8
+
+RUN cd /usr/bin \
+  && curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${FLYWAY_VERSION}/flyway-commandline-${FLYWAY_VERSION}.tar.gz -o flyway-commandline-${FLYWAY_VERSION}.tar.gz \
+  && tar -xzf flyway-commandline-${FLYWAY_VERSION}.tar.gz --strip-components=1 \
+  && rm flyway-commandline-${FLYWAY_VERSION}.tar.gz \
+  && chmod +x /usr/bin/*
+
+COPY flyway /flyway
+COPY validation /validation
+COPY csvs/ /csvs
+COPY requirements.txt /tmp/requirements.txt
+COPY environment.json /environment.json
 
 RUN apt update -y \
     && apt upgrade -y \
-    && apt install -y software-properties-common locales gnupg python3-pip libpq-dev \
+    && apt install -y software-properties-common locales gnupg python3-pip libpq-dev openssl ca-certificates bash postgresql-client \
     && apt update -y \
     && localedef -i en_GB -c -f UTF-8 -A /usr/share/locale/locale.alias en_GB.UTF-8a \
-    && python3 -m pip install -r requirements.txt \
+    && python3 -m pip install -r /tmp/requirements.txt \
     && apt remove -y python3-pip \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
-    && groupadd -r user && useradd --no-log-init -r -g user user
+    && chown -R java:java /home/java /flyway /validation /csvs /environment.json \
+    && chmod +x /validation/validate.py /csvs/load_csvs.py
 
-USER user
-
-ENV LANG en_GB.utf8
-
-ENTRYPOINT [ "python3", "run.py"]
+USER java
+WORKDIR /

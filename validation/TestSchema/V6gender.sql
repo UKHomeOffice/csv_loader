@@ -8,10 +8,10 @@ CREATE TABLE gender (
 -- Table comment
 COMMENT ON TABLE gender IS '{"description": "Self identifying gender lists", "schemalastupdated": "06/03/2019", "dataversion": 1}';
 -- Column comments
-COMMENT ON COLUMN gender.id IS '{"label": "Identifier", "description": "Database unique identity record", "summaryview": "false"}';
-COMMENT ON COLUMN religion.gender IS '{"label": "Gender", "waffle": "bacon", description": "Name of gender", "summaryview": "true"}';
-COMMENT ON COLUMN gender.validfrom IS '{"label": "Valid from date", "description": "Item valid from date", "summaryview" : "false"}';
-COMMENT ON COLUMN gender.validto IS '{"label": "Valid to date", "description": "Item valid to date", "summaryview" : "false"}';
+COMMENT ON COLUMN gender.id IS '{"label": "Identifier", "description": "Database unique identity record"}';
+COMMENT ON COLUMN religion.gender IS '{"label": "Gender", "waffle": "bacon", description": "Name of gender"}';
+COMMENT ON COLUMN gender.validfrom IS '{"label": "Valid from date", "description": "Item valid from date"}';
+COMMENT ON COLUMN gender.validto IS '{"label": "Valid to date", "description": "Item valid to date"}';
 
 -- GRANTs
 GRANT SELECT ON gender TO ${anonuser};

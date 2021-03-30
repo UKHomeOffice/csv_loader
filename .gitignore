@@ -1,0 +1,11 @@
+.hidden/*
+flyway/schemas/reference/R__bulkload.sql
+postgrest/*
+.idea/*
+.idea
+postgres_data_refdata/*
+*.env
+private-refdata/*
+.DS_Store
++docker/refenv
+postgres/data

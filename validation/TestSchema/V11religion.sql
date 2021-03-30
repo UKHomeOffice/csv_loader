@@ -9,10 +9,10 @@ CREATE TABLE religion (
 -- Table comment
 COMMENT ON TABLE religion IS '{"description": "Religions", "schemalastupdated": "10/03/2019", "dataversion": 1}';
 -- Column comments
-COMMENT ON COLUMN religion.id IS '{"label": "Identifier", "description": "Database unique identity record", "summaryview": "false"}';
-COMMENT ON COLUMN religion.name IS '{"label": "Name", "description": "Religion name", "summaryview": "true"}';
-COMMENT ON COLUMN religion.validfrom IS '{"label": "Valid from date", "description": "Item valid from date", "summaryview" : "false"}';
-COMMENT ON COLUMN religion.validto IS '{"label": "Valid to date", "description": "Item valid to date", "summaryview" : "false"}';
+COMMENT ON COLUMN religion.id IS '{"label": "Identifier", "description": "Database unique identity record"}';
+COMMENT ON COLUMN religion.name IS '{"label": "Name", "description": "Religion name"}';
+COMMENT ON COLUMN religion.validfrom IS '{"label": "Valid from date", "description": "Item valid from date"}';
+COMMENT ON COLUMN religion.validto IS '{"label": "Valid to date", "description": "Item valid to date"}';
 
 -- GRANTs
 GRANT SELECT ON religion TO ${anonuser};

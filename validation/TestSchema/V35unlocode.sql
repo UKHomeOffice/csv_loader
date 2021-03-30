@@ -24,26 +24,26 @@ CREATE TABLE unlocode (
 -- Table comment
 COMMENT ON TABLE unlocode IS '{"description": "United Nations location code list", "schemalastupdated": "06/03/2019", "dataversion": 1}';
 -- Column comments
-COMMENT ON COLUMN unlocode.id IS '{"label": "Identifier", "description": "Unique identifying column", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.name IS '{"label": "Name", "description": "Location name", "summaryview": "true"}';
-COMMENT ON COLUMN unlocode.geolat IS '{"label": "Latitude", "description": "Geographic latitude", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.geolong IS '{"label": "Longitude", "description": "Geographic longitude", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.namewodiacritics IS '{"label": "Name with diacritics", "description": "Location name including diacritics", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.iata IS '{"label": "IATA", "description": "IATA code", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.locode IS '{"label": "Locode", "description": "Location code", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.seaport IS '{"label": "Sea port", "description": "Is an sea port?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.railterminal IS '{"label": "Rail terminal", "description": "Is an rail terminal?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.airport IS '{"label": "Airport", "description": "Is an airport?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.postexchange IS '{"label": "Post exchanget", "description": "Is an postal exchange?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.multimodal IS '{"label": "Multi modal", "description": "Is multi modal?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.fixedtransport IS '{"label": "Fixed transport", "description": "Is a fixed transport point?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.bordercrossing IS '{"label": "Border crossing", "description": "Is a border crossing point?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.subdivision IS '{"label": "County", "description": "Area of port", "summaryview": "false", "aliases": "region"}';
-COMMENT ON COLUMN unlocode.roadterminal IS '{"label": "Road terminal", "description": "Is a road terminal?", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.countryid IS '{"label": "Linked country id", "description": "Country link to Country dataset", "summaryview": "false"}';
-COMMENT ON COLUMN unlocode.validfrom IS '{"label": "Valid from date", "description": "Item valid from date", "summaryview" : "false"}';
-COMMENT ON COLUMN unlocode.validto IS '{"label": "Valid to date", "description": "Item valid to date", "summaryview" : "false"}';
-COMMENT ON COLUMN unlocode.iso31661alpha2 IS '{"label": "2 digit alpha code", "description": "Country 2 Character alpha code", "summaryview": "true"}';
+COMMENT ON COLUMN unlocode.id IS '{"label": "Identifier", "description": "Unique identifying column"}';
+COMMENT ON COLUMN unlocode.name IS '{"label": "Name", "description": "Location name"}';
+COMMENT ON COLUMN unlocode.geolat IS '{"label": "Latitude", "description": "Geographic latitude"}';
+COMMENT ON COLUMN unlocode.geolong IS '{"label": "Longitude", "description": "Geographic longitude"}';
+COMMENT ON COLUMN unlocode.namewodiacritics IS '{"label": "Name with diacritics", "description": "Location name including diacritics"}';
+COMMENT ON COLUMN unlocode.iata IS '{"label": "IATA", "description": "IATA code"}';
+COMMENT ON COLUMN unlocode.locode IS '{"label": "Locode", "description": "Location code"}';
+COMMENT ON COLUMN unlocode.seaport IS '{"label": "Sea port", "description": "Is an sea port?"}';
+COMMENT ON COLUMN unlocode.railterminal IS '{"label": "Rail terminal", "description": "Is an rail terminal?"}';
+COMMENT ON COLUMN unlocode.airport IS '{"label": "Airport", "description": "Is an airport?"}';
+COMMENT ON COLUMN unlocode.postexchange IS '{"label": "Post exchanget", "description": "Is an postal exchange?"}';
+COMMENT ON COLUMN unlocode.multimodal IS '{"label": "Multi modal", "description": "Is multi modal?"}';
+COMMENT ON COLUMN unlocode.fixedtransport IS '{"label": "Fixed transport", "description": "Is a fixed transport point?"}';
+COMMENT ON COLUMN unlocode.bordercrossing IS '{"label": "Border crossing", "description": "Is a border crossing point?"}';
+COMMENT ON COLUMN unlocode.subdivision IS '{"label": "County", "description": "Area of port", "aliases": "region"}';
+COMMENT ON COLUMN unlocode.roadterminal IS '{"label": "Road terminal", "description": "Is a road terminal?"}';
+COMMENT ON COLUMN unlocode.countryid IS '{"label": "Linked country id", "description": "Country link to Country dataset"}';
+COMMENT ON COLUMN unlocode.validfrom IS '{"label": "Valid from date", "description": "Item valid from date"}';
+COMMENT ON COLUMN unlocode.validto IS '{"label": "Valid to date", "description": "Item valid to date"}';
+COMMENT ON COLUMN unlocode.iso31661alpha2 IS '{"label": "2 digit alpha code", "description": "Country 2 Character alpha code"}';
 
 -- GRANTs
 GRANT SELECT ON tdaapprovalstatus TO ${anonuser};

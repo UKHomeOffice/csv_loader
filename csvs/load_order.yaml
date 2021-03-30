@@ -1,0 +1,9 @@
+version: 1
+patch:
+  # - table: unit
+  #   csv: V1__sample.csv
+init:
+  - table: sex
+    csv: sex.csv
+  - table: gender
+    csv: gender.csv

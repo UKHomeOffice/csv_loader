@@ -91,7 +91,7 @@ def main():
     keycloak_openid = None
     is_local_dev = args.environment == "local"
 
-    with open('environment.json', 'r') as environmentFile:
+    with open('../environment.json', 'r') as environmentFile:
         environmentData=environmentFile.read()
 
     args.environment
@@ -109,7 +109,7 @@ def main():
 
     print(f"do init:     {do_init}")
 
-    with open(r'load_order.yaml') as f:
+    with open(r'/csvs/load_order.yaml') as f:
         documents = yaml.full_load(f)
 
     init_documents = documents.get("init")
@@ -121,7 +121,7 @@ def main():
         for item in init_documents:
             table = item["table"]
             filename = item["csv"]
-            query(table, filename, "csvs/initial", server, False, token=token)
+            query(table, filename, "/csvs/initial", server, False, token=token)
         save_state("init", server, token=token)
 
     if patch_documents:
@@ -133,13 +133,9 @@ def main():
             if filename in applied_scripts:
                 print(f"[bold]{filename}[/bold] [underline]already[/underline] applied.")
             else:
-                query(table, filename, "csvs/patch", server, True, token=token)
+                query(table, filename, "/csvs/patch", server, True, token=token)
                 save_state(filename, server, token=token)
 
-    # # Refresh token
-    # token = keycloak_openid.refresh_token(token['refresh_token'])
-
-    # Logout
     if not is_local_dev:
         keycloak_openid.logout(token['refresh_token'])
 

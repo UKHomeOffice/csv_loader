@@ -1,0 +1,20 @@
+services:
+  flyway:
+    build: .
+    volumes:
+      - ./flyway:/flyway
+
+  validate:
+    build: .
+    volumes:
+      - ./validation:/validation
+      - ./flyway:/flyway
+
+  csv_loader:
+    build: .
+    volumes:
+      - ./csvs:/csvs
+
+  postgrest:
+    environment:
+      - PGRST_JWT_SECRET={"kid":"xSJn0cfmjPOagRdQMzbDWstgVAvrbEtPwSjdc-2jfck","kty":"RSA","alg":"RS256","n":"jrJ1Hq53tOalE6M0cuGbepr7PIeGGn3lakkFnx0ZfS15NYvF8OxE-0SjdLXEJsGa1iaIvxvb8_SId8_FZZ-nrnIx5rl7zlmQfzHbV5hYZNLJkHZiozpwr7ReIwE0-jupkjMTIVxatCcQDoUOq1A8qKkrqeAXnz0CnNu1irV0Ly5IUABGCu4EuLhgefZHYu3uFg6m_mU0l8xEIVzmEbSnPPO16-fhCeC9v0rayCkBr4eVVcQKJWPWNv0AiiptQqytV6-p8e4WHim3SyeGDoS00jfRseWKjVDY_dl86W906ikQX5XsQw5iM7w9eAK8QRS6kLQC31K5SP_GY-kYV8JHCw","e":"AQAB"}

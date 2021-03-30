@@ -18,11 +18,11 @@ CREATE TABLE currency (
 -- Table comment
 COMMENT ON TABLE currency IS '{"description": "Currencies", "schemalastupdated": "10/03/2019", "dataversion": 1}';
 -- Column comments
-COMMENT ON COLUMN currency.id IS '{"label": "Identifier", "description": "Database unique identity record", "summaryview": "false"}';
-COMMENT ON COLUMN currency. IS '{"label": "2 iption": "Country 2 Character alpha code", "summaryview": "true"}';
-COMMENT ON COLUMN currency.currency IS '{"label": "Currency", "description": "Currency name", "summaryview": "true"}';
-COMMENT ON COLUMN currenc.currency IS '{"label": "Valid from date", "description": "Item valid from date", "summaryview" : "false"}';
-COMMENT ON COLUMN currency.validto IS '{"label": "Valid to date", "description": "Item valid to date", "summaryview" : "false"}';
+COMMENT ON COLUMN currency.id IS '{"label": "Identifier", "description": "Database unique identity record"}';
+COMMENT ON COLUMN currency. IS '{"label": "2 iption": "Country 2 Character alpha code"}';
+COMMENT ON COLUMN currency.currency IS '{"label": "Currency", "description": "Currency name"}';
+COMMENT ON COLUMN currenc.currency IS '{"label": "Valid from date", "description": "Item valid from date"}';
+COMMENT ON COLUMN currency.validto IS '{"label": "Valid to date", "description": "Item valid to date"}';
 
 COMMENT ON COLUMN nationality.country IS '{"": yes this is", "label": "no this isnt"}';
 

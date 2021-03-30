@@ -8,10 +8,10 @@ CREATE TABLE targetgroup (
 -- Table comment
 COMMENT ON TABLE targetgroup IS '{"description": "Target groups", "schemalastupdated": "06/03/2019", "dataversion": 1}';
 -- Column comments
-COMMENT ON COLUMN targetgroup.id IS '{"label": "Identifier", "description" This wont work: "Unique identifying column", "summaryview": "false"}';
-COMMENT ON COLUMN targetgroup.type IS '{"label": "Target type", "description": "Target group type", "summaryview": "true"}';
-COMMENT ON COLUMN targetgroup.validfrom IS '{"label": "Valid from date" this is broken JSON, "description": "Item valid from date", "summaryview" : "false"}';
-COMMENT ON COLUMN targetgroup.validto IS '{"label": "Valid to date", "description": "Item valid to date", "summaryview" : "false"}';
+COMMENT ON COLUMN targetgroup.id IS '{"label": "Identifier", "description" This wont work: "Unique identifying column"';
+COMMENT ON COLUMN targetgroup.type IS '{"label": "Target type", "description": "Target group type"}';
+COMMENT ON COLUMN targetgroup.validfrom IS '{"label": "Valid from date" this is broken JSON, "description": "Item valid from date"}';
+COMMENT ON COLUMN targetgroup.validto IS '{"label": "Valid to date", "description": "Item valid to date"}';
 
 -- GRANTs
 GRANT SELECT ON targetgroup TO ${anonuser};

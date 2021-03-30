@@ -8,10 +8,10 @@ CREATE TABLE modetypes (
 -- Table comment
 COMMENT ON TABLE modetypes IS '{"description": "Class of transport", "schemalastupdated": "06/03/2019", "dataversion": 1}';
 -- Column comments
-COMMENT ON COLUMN modetypes.id IS '{"label": "Identifier", "description": "Unique identifying column", "summaryview": "false"}';
-COMMENT ON COLUMN modetypes.class IS '{"label": "Class", "description": "Type of transport class", "summaryview": "true"}';
-COMMENT ON COLUMN modetypes.validfrom IS '{"label": "Valid from date", "description": "Item valid from date", "summaryview" : "false"}';
-COMMENT ON COLUMN modetypes.validto IS '{"label": "Valid to date", "description": "Item valid to date", "summaryview" : "false"}';
+COMMENT ON COLUMN modetypes.id IS '{"label": "Identifier", "description": "Unique identifying column"}';
+COMMENT ON COLUMN modetypes.class IS '{"label": "Class", "description": "Type of transport class"}';
+COMMENT ON COLUMN modetypes.validfrom IS '{"label": "Valid from date", "description": "Item valid from date"}';
+COMMENT ON COLUMN modetypes.validto IS '{"label": "Valid to date", "description": "Item valid to date"}';
 
 -- GRANTs
 GRANT SELECT ON modetypes TO ${anonuser};

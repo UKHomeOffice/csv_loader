@@ -38,7 +38,7 @@ def find_and_sort_scripts() -> Tuple[List[str], int]:
 
     # sort by version number as integer
     files = [(fn, (int(fn[1:].split("_")[0]))) for fn in files
-             if not fn.startswith("R")]
+             if fn.startswith("V")]
     sfiles = sorted(files, key=lambda t: t[1])
 
     return [x[0] for x in sfiles], sfiles[-1][1]

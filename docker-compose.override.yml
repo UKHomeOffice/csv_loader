@@ -1,20 +1,20 @@
 services:
   flyway:
-    build: .
+#    build: .
     volumes:
       - ./flyway:/flyway
 
   validate:
-    build: .
+#    build: .
     volumes:
       - ./validation:/validation
       - ./flyway:/flyway
 
   csv_loader:
-    build: .
+#    build: .
     volumes:
       - ./csvs:/csvs
 
   postgrest:
     environment:
-      - PGRST_JWT_SECRET={"kid":"xSJn0cfmjPOagRdQMzbDWstgVAvrbEtPwSjdc-2jfck","kty":"RSA","alg":"RS256","n":"jrJ1Hq53tOalE6M0cuGbepr7PIeGGn3lakkFnx0ZfS15NYvF8OxE-0SjdLXEJsGa1iaIvxvb8_SId8_FZZ-nrnIx5rl7zlmQfzHbV5hYZNLJkHZiozpwr7ReIwE0-jupkjMTIVxatCcQDoUOq1A8qKkrqeAXnz0CnNu1irV0Ly5IUABGCu4EuLhgefZHYu3uFg6m_mU0l8xEIVzmEbSnPPO16-fhCeC9v0rayCkBr4eVVcQKJWPWNv0AiiptQqytV6-p8e4WHim3SyeGDoS00jfRseWKjVDY_dl86W906ikQX5XsQw5iM7w9eAK8QRS6kLQC31K5SP_GY-kYV8JHCw","e":"AQAB"}
+      - PGRST_JWT_SECRET={"kid":"Kknk650ZQe6Gre8Ff_PcckGUBrQS-Hr_dhn2H-yWPwI","kty":"RSA","alg":"RS256","n":"nDHzAx53gv6a1X1P4PDhChheVLujZ6QtfjmGo6GfgV7XC6MSwPiCWyNcA_oMXnhBbINCxq41xxXu83SANPYoB11KEphkl4AIwmwWpUH36HYHpRm3sDljyUPWDt0-FKceaOSR8sBx_TGCD3If5v1gyEa4NLxKHLVkcv3JOQloGCXPr3rLrMFIcDJg4HvwJNiIPFFfP1mQccbhbvGBahZLOUxb5fbjU0MmOcSYZoVqx6lD7E8VQO0I__u84leRh5GSZmi24B4vhmEzC6_4WJE6ftapdMOR8nl_qgl5RTM9DCkeS8gf9MyymgVV-YI-QjEGd8vb7SUtGR92796i6g4xgw","e":"AQAB"}

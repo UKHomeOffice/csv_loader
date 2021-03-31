@@ -88,6 +88,18 @@ def save_state(filename: str, server, token=None):
     r = requests.post(f"{server}/_data_change_history", headers=headers, json=data)
 
 
+def refresh_views(server, token=None):
+    headers = {"Content-Type": "application/json"}
+    add_auth(headers, token=token)
+    data = {"schema_arg": "public"}
+    print("Refreshing materialized views")
+    r = requests.post(f"{server}/rpc/refreshallmaterializedviews", headers=headers, json=data)
+
+    if r.status_code != 200:
+        raise Exception(r.text)
+
+    print(f"[OK]")
+
 def main():
     token = None
     keycloak_openid = None
@@ -137,6 +149,8 @@ def main():
             else:
                 query(table, filename, "/csvs/patch", server, True, token=token)
                 save_state(filename, server, token=token)
+
+    refresh_views(server, token=token)
 
     if not is_local_dev:
         keycloak_openid.logout(token['refresh_token'])

@@ -15,8 +15,20 @@ COMMENT ON COLUMN sex.code IS '{"label": "Name", "description": "Short code / Bu
 COMMENT ON COLUMN sex.validfrom IS '{"label": "Valid from date", "description": "Item valid from date."}';
 COMMENT ON COLUMN sex.validto IS '{"label": "Valid to date", "description": "Item valid to date."}';
 
+-- MATERIALIZED VIEW
+CREATE MATERIALIZED VIEW m_sex AS
+SELECT * FROM sex
+where (validfrom <= now()::date OR validfrom is null)
+  AND (validto >= now()::date + interval '1d' OR validto is null);
+
+CREATE UNIQUE INDEX ON m_sex (id);
+
 -- GRANTs
 GRANT SELECT ON sex TO ${anonuser};
-GRANT SELECT, INSERT, UPDATE ON sex TO ${serviceuser};
+GRANT SELECT,INSERT,UPDATE ON sex TO ${serviceuser};
 GRANT SELECT ON sex TO ${readonlyuser};
 
+-- VIEW GRANTs
+GRANT SELECT,INSERT,UPDATE ON m_sex TO ${serviceuser};
+GRANT SELECT ON m_sex TO ${readonlyuser};
+GRANT SELECT ON m_sex TO ${anonuser};

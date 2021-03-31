@@ -1,5 +1,5 @@
 id,name,code,validfrom,validto
-M,Male,1,2019-01-01 00:01:00+00,NULL
-F,Female,2,2019-01-01 00:01:00+00,NULL
-X,Indeterminate,3,2019-01-01 00:01:00+00,NULL
-U,Unknown,4,2019-01-01 00:01:00+00,NULL
+1,Male,M,2019-01-01 00:01:00+00,NULL
+2,Female,F,2019-01-01 00:01:00+00,NULL
+3,Indeterminate,X,2019-01-01 00:01:00+00,NULL
+4,Unknown,U,2019-01-01 00:01:00+00,NULL

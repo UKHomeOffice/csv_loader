@@ -60,6 +60,8 @@ def query(table: str, filename: str, dir: str, server, is_upsert=False, token=No
     with open(f"{dir}/{filename}", "r", encoding="utf-8") as fn:
         csv = fn.read()
 
+    print(header)
+
     r = requests.post(f"{server}/{table}", headers=header, data=csv.encode("utf-8"))
 
     if r.status_code != 201:

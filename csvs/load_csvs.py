@@ -15,9 +15,9 @@ def init_args():
     parser.add_argument("-u", "--username", help="username", default="demo")
     parser.add_argument("-p", "--password", help="password", default="demo")
     parser.add_argument("-e", "--environment", default="docker",
-                        choices=["docker", "local", "dev", "staging", "production"],
+                        choices=["docker", "local", "dev", "sit", "staging", "production"],
                         help=' '.join(["Specify the type of environment this is to be deployed in, ",
-                                      "Valid choices are: docker, local, dev, staging, production"]))
+                                      "Valid choices are: docker, local, dev, sit, staging, production"]))
     args = parser.parse_args()
     return args
 
@@ -157,4 +157,3 @@ def main():
 if __name__ == "__main__":
     args = init_args()
     main()
-

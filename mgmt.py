@@ -18,6 +18,7 @@ watched_containers = []
 windows = set()
 container_name_to_id = {}
 USE_COMPOSE = True
+COMPOSE_FILE_NAME = "./docker-compose.general.yml"
 
 
 def start_container(sender, name):
@@ -94,8 +95,17 @@ def get_jwt(sender, data):
         "e": key["e"]
     }
     j_key = json.dumps(key)
-    print(j_key)
     set_value("keycloak#jwt", j_key)
+
+    # update yaml
+    import yaml
+    with open(COMPOSE_FILE_NAME) as f:
+        config = yaml.full_load(f)
+        config["services"]["postgrest"]["environment"] = [f"PGRST_JWT_SECRET={j_key}"]
+
+    with open(COMPOSE_FILE_NAME, "w") as f:
+        f.write(yaml.dump(config))
+
 
 
 def refresh_table_list(sender, data):
@@ -103,6 +113,18 @@ def refresh_table_list(sender, data):
     conn = psycopg2.connect(host="db", database="ref", user="postgres", password="postgres")
     conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
+
+
+def drop_db(sender, data):
+    conn = psycopg2.connect(host="localhost", database="postgres", user="postgres", password="postgres")
+    conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    cur = conn.cursor()
+    cur.execute("drop database ref;")
+    cur.execute("drop user anonuser,authuser,dbowner,readonlyuser,serviceuser;")
+    cur.execute("drop table flyway_schema_history;")
+    conn.commit()
+    cur.close()
+    conn.close()
 
 
 with window("window#schema", label="Schema Browser", width=600):
@@ -119,6 +141,7 @@ with window("Main"):
 
     with menu_bar("menu#main"):
         with menu("menu#db", label="DB"):
+            add_menu_item("menu#db#clean", label="Drop", callback=drop_db)
             add_menu_item("menu#db#schema", label="Schema Browser", callback=open_schema_browser)
             add_menu_item("menu#db#view", label="Data Viewer")
 
@@ -140,7 +163,7 @@ with window("Main"):
         with node("keycloak", label="Keycloak", x_pos=200, y_pos=250):
             with node_attribute("keycloak#in"):
                 add_status_report("keycloak")
-                add_button("keycloak#browser", label="admin console",
+                add_button("keycloak#browser", label="users",
                            callback=lambda s, d: webbrowser.open(
                                "http://localhost:8080/auth/admin/master/console/#/realms/rocks/users"))
                 add_button("keycloak#getjwt", label="get JWT token",

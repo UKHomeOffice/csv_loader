@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: digitalpatterns/timescaledb:latest
+    image: postgres:11
     container_name: db
     ports:
       - "5432:5432"

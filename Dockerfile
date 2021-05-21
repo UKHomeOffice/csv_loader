@@ -1,10 +1,14 @@
-FROM digitalpatterns/jre:latest
+FROM openjdk:11.0.11-jre
 
 ENV FLYWAY_VERSION 7.3.0
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/flyway:/usr/bin:${PATH}"
 ENV PYTHONPATH="/python:${PYTHONPATH}"
 ENV LANG en_GB.utf8
+
+RUN apt update -y \
+    && apt upgrade -y \
+    && apt install -y curl
 
 RUN cd /usr/bin \
   && curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${FLYWAY_VERSION}/flyway-commandline-${FLYWAY_VERSION}.tar.gz -o flyway-commandline-${FLYWAY_VERSION}.tar.gz \
@@ -17,6 +21,8 @@ COPY validation /validation
 COPY csvs/ /csvs
 COPY requirements.txt /tmp/requirements.txt
 COPY environment.json /environment.json
+
+RUN useradd -m java
 
 RUN apt update -y \
     && apt upgrade -y \

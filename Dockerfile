@@ -31,7 +31,6 @@ RUN apt update -y \
     && localedef -i en_GB -c -f UTF-8 -A /usr/share/locale/locale.alias en_GB.UTF-8a \
     && python3 -m pip install -r /tmp/requirements.txt \
     && apt remove -y python3-pip \
-    && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && chown -R java:java /home/java /flyway /validation /csvs /environment.json \
     && chmod +x /validation/validate.py /csvs/load_csvs.py

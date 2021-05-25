@@ -6,5 +6,13 @@
       "realm": "rocks"
     },
     "server": "http://postgrest:3000"
+  },
+  "local": {
+    "auth": {
+      "url": "http://localhost:8080/auth/",
+      "clientId": "service",
+      "realm": "rocks"
+    },
+    "server": "http://localhost:3000"
   }
 }

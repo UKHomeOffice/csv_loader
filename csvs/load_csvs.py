@@ -106,7 +106,6 @@ def main():
     with open('../environment.json', 'r') as environmentFile:
         environmentData=environmentFile.read()
 
-    args.environment
     envs = json.loads(environmentData)[args.environment]
     server = envs['server']
 
